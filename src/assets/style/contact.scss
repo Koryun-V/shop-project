@@ -1,0 +1,160 @@
+@import "variables";
+
+/* Main Contact Header */
+.contact_header_desc {
+  font-weight: bold;
+  font-size: 48px;
+  color: #171B24;
+  margin-bottom: 25px;
+}
+
+/* Contact Section */
+.concat_container {
+  display: flex;
+  flex-direction: column;
+
+  h1{
+    cursor: default;
+    font-size: 50px;
+    font-family: "RobotoBold","sans-serif";
+  }
+
+  span{
+    font-family: "RobotoRegular","sans-serif";
+  }
+}
+
+.contact_name {
+  font-weight: 600;
+  font-size: 34px;
+  color: #2F323A;
+  margin-top: 50px;
+}
+
+.contact_big_description {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 160px;
+}
+
+.contact_desc {
+  width: calc(100% / 4);
+  display: flex;
+  flex-direction: column;
+}
+
+.contact_mini_desc {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact_mini_desc_text {
+  font-size: 18px;
+  font-weight: 400;
+  color: #2F323A;
+  margin: 2px;
+}
+
+/* About Image Section */
+.about-image_div {
+  width: 100%;
+  height: 500px;
+  position: relative;
+}
+
+.about-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-image_div_desc_header {
+  width: 700px;
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 220px;
+  margin: 80px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.about-image_desc_text {
+  margin: 20px 0 30px;
+}
+
+.about-image_desc_mini_text {
+  font-size: 16px;
+  font-weight: 400;
+  color: #2F323A;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .contact_big_description {
+    gap: 80px;
+  }
+
+  .about-image_div_desc_header {
+    left: 100px;
+    width: 90%;
+  }
+}
+
+@media (max-width: 992px) {
+  .contact_desc {
+    width: calc(100% / 2);
+  }
+
+  .contact_name {
+    font-size: 28px;
+  }
+
+  .contact_header_desc {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact_desc {
+    width: 100%;
+  }
+
+  .contact_big_description {
+    gap: 40px;
+  }
+
+  .about-image_div_desc_header {
+    position: static;
+    margin: 40px auto;
+    width: 100%;
+  }
+
+  .about-image_div {
+    height: auto;
+  }
+
+  .about-image {
+    height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact_header_desc {
+    font-size: 28px;
+  }
+
+  .contact_name {
+    font-size: 22px;
+    margin-top: 30px;
+  }
+
+  .contact_mini_desc_text {
+    font-size: 16px;
+  }
+
+  .about-image_desc_mini_text {
+    font-size: 14px;
+  }
+}

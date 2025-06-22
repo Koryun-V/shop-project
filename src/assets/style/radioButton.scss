@@ -1,0 +1,94 @@
+@import "variables";
+
+.custom-radio-input {
+  display: none;
+}
+
+.gender-radio-group{
+  width: 320px;
+  height: 50px;
+  position: absolute;
+  top:180px;
+  padding:0 15px;
+  font-family: "PoppinsMedium", sans-serif;
+  font-size: 15px;
+
+  span{
+    color: #2e2e2e;
+  }
+}
+
+.gender-block{
+  margin-top:9px;
+  display:flex;
+}
+
+.custom-radio-container {
+  display: inline-block;
+  margin-right: 20px;
+  position: relative;
+  cursor: pointer;
+
+  .custom-radio {
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+
+    .custom-radio-circle {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      border: 2px solid $interfaceColor;
+      border-radius: 50%;
+      background-color: #fff;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+
+      &:hover {
+        border-color: $interfaceColor;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 5px;
+        top: 5px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: white;
+      }
+    }
+
+    &.selected {
+      .custom-radio-circle {
+        background-color: $interfaceColor;
+        border-color: $interfaceColor;
+
+        &::after {
+          background-color: white;
+        }
+      }
+    }
+
+    .custom-radio-label {
+      margin-left: 30px;
+      color: #333;
+      font-size: 16px;
+    }
+  }
+}
+
+.custom-radio-input:checked + .custom-radio-container .custom-radio .custom-radio-circle {
+  background-color: $interfaceColor;
+  border-color: $interfaceColor;
+
+  &::after {
+    background-color: white;
+  }
+}

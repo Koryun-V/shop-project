@@ -1,0 +1,162 @@
+@import "variables";
+
+.review-block {
+  margin-top: 10px;
+  transition: 0.2s all;
+  width: 400px;
+
+  .product-review {
+    gap:10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    .img-review {
+      width:70px;
+      height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        width: auto;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .title-review {
+      justify-content: space-evenly;
+      width: 80%;
+      display: flex;
+      flex-direction: column;
+      font-family: "PoppinsMedium", "sans-serif";
+
+      strong {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      span {
+        color: white;
+        padding: 5px;
+      }
+    }
+  }
+
+  .user-review {
+    gap:10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    .img-user {
+      width:70px;
+      height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .img-block-r {
+        width: 20%;
+        min-width: 70px;
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 100px;
+
+        img {
+          border-radius: 100px;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+
+    .user-modal-icon-r {
+      background: #d1d1d1;
+      width: 70px;
+      height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 100px;
+
+      .icon {
+        font-size: 30px;
+        color:#737373;
+      }
+    }
+
+    .title-user {
+      justify-content: space-evenly;
+      width:80%;
+      display: flex;
+      flex-direction: column;
+      font-family: "PoppinsMedium", "sans-serif";
+    }
+  }
+
+  textarea {
+    margin-top: 20px;
+    width: 400px;
+    height: 200px;
+    resize: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 10px;
+    border: 2px solid #d1d1d1;
+    font-family: "RobotoMedium", "sans-serif";
+    font-size: 16px;
+  }
+
+  textarea:focus-within {
+    border: 2px solid $interfaceColor;
+  }
+}
+
+.max {
+  height: 20px;
+  width: 100%;
+  text-align: right;
+
+  span {
+    font-family: "RobotoMedium", "sans-serif";
+  }
+}
+
+.star {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+
+  .icon {
+    transition: 0.2s all;
+    font-size: 50px;
+  }
+}
+
+.star-disable {
+  color: black;
+}
+
+.star-active {
+  color: rgb(255, 234, 0);
+}
+
+.loading-gradient-r {
+  border-radius: 5px;
+  opacity: 0.7;
+  width: 100%;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(194, 194, 194, 1) 35%, rgba(230, 230, 230, 1) 100%);
+  background-size: 400%;
+  animation: gradient 2s infinite linear;
+}
+

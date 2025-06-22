@@ -1,0 +1,69 @@
+@import "variables";
+
+.modal {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  z-index: 10000;
+  background: #171B2499;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  &__container {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+  }
+
+  &__content {
+    position: relative;
+    top: 100px;
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #e7e4e4;
+    border: 1p solid #171B2499;
+    border-radius: 8px;
+    padding: 10px;
+    transition: 0.4s all;
+
+    &.small{
+      width: calc(100vw - 90px);
+      max-width: 380px;
+      min-height: 200px;
+    }
+
+    &.big{
+      width: calc(100vw - 150px);
+      max-width: 550px;
+      min-height: 450px;
+    }
+  }
+}
+
+.close__button {
+  position: absolute;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  .close__modal {
+    width: 100%;
+    height: 100%;
+  }
+
+  .close__modal * {
+    transition: 0.1s;
+    fill: #d1d1d1;
+    stroke: #d1d1d1;
+  }
+}
+
+.close__button:hover .close__modal * {
+  fill: $interfaceColor;
+  stroke: $interfaceColor;
+}
