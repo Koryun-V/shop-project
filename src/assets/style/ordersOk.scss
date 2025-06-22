@@ -1,0 +1,57 @@
+.orders__ok {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px;
+  background-color: #fcfcfc;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 550px;
+  margin: 120px auto;
+
+  &__title {
+    color: #2F323A;
+    margin-top: 10px;
+    font-family: Manrope, sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 57.6px;
+    text-align: center;
+  }
+
+  &__desc {
+    margin: 10px;
+    color: #2F323A;
+    font-family: Manrope, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 24.48px;
+    text-align: center;
+
+
+  }
+
+  &__button  {
+    padding: 12px 24px;
+    font-size: 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 80%;
+
+    &:hover {
+      background-color: #218838;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+
+}

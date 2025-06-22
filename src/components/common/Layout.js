@@ -1,155 +1,330 @@
-import React, {useEffect, useState} from "react";
-import {Link, Outlet} from "react-router-dom";
-import ModalRegister from "./Modal/ModalRegister";
+import React, {useEffect, useRef, useState} from "react";
+import {Link, Outlet, useLocation, useNavigate, useParams} from "react-router-dom";
 import ModalLogin from "./Modal/ModalLogin";
-import axios from "axios";
-//main
+import Button from "../mini/Button";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {
+    faMagnifyingGlass,
+    faAngleDown,
+    faCartShopping,
+    faCube,
+    faEnvelope,
+    faLocationDot,
+    faArrowRight,
+} from "@fortawesome/free-solid-svg-icons";
+import {useDispatch, useSelector} from "react-redux";
+import {setIsOpenLogin} from "../../store/actions/login";
+import visa from "../../assets/icon/Visa.svg";
+import group5 from "../../assets/icon/Group_5.svg";
+import group6 from "../../assets/icon/Group_6.svg";
+import sim from "../../assets/icon/sim.svg";
+import logo from "../../assets/icon/logo.png";
+
+import {
+    getAllProducts,
+    setSearchValue,
+    getAllNames,
+    setNameData,
+    setUserId,
+    getStores,
+    clearProductNames,
+} from "../../store/actions/home";
+
+import Notifications from "./Notifications";
+import Profile from "./Profile";
+import {fetchCards} from "../../store/actions/card";
+import {getOrder} from "../../store/actions/order";
+import {clearRedirectPath} from "../../store/slices/authRedirect";
+
 const token = localStorage.getItem("token");
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
 function Layout() {
-    const [user, setUser] = useState({});
-    const [isOpenRegister, setIsOpenRegister] = useState(false)
-    const [isOpenLogin, setIsOpenLogin] = useState(false)
+    const [limit, setLimit] = useState(12);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    const [files, setFiles] = useState([])
-    const [previewImg, setPreviewImg] = useState([])
+    const searchRef = useRef(null);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const user = useSelector((state) => state.login.user);
+    const isOpenLogin = useSelector((state) => state.login.isOpenLogin);
+    const searchValue = useSelector((state) => state.home.searchValue);
+    const page = useSelector((state) => state.home.page);
+    const minPrice = useSelector((state) => state.home.minPrice);
+    const maxPrice = useSelector((state) => state.home.maxPrice);
+    const storeId = useSelector((state) => state.home.storeId);
+    const productsNames = useSelector((state) => state.home.productsNames);
+    const userId = useSelector((state) => state.login.user?.id);
+    const stores = useSelector((state) => state.home.storesList);
+    const totalCard = useSelector((state) => state.card.totalCards);
+    const statusCard = useSelector((state) => state.card.statusGet);
+    const statusOrder = useSelector((state) => state.order.status);
+    const totalOrder = useSelector((state) => state.order.totalOrder);
+    const orderConfirmStatus = useSelector((state) => state.order.orderConfirmStatus);
+    const {pathname} = useLocation();
+    const statusDelete = useSelector((state) => state.card.status);
+    const redirectPath = useSelector((state) => state.authRedirect.path);
+    const [moreAnim, setMoreAnim] = useState("nav-more");
+    const {id} = useParams();
 
-    //
-    // useEffect(() => {
-    //     const previewUrls = files.map((file) => URL.createObjectURL(file));
-    //     setPreviewImg(previewUrls);
-    // }, [files]);
-
-    // useEffect(() => {
-    //     let x = previewImg.forEach(url => URL.revokeObjectURL(url))
-    //     console.log(x)
-    // }, [files]);
-
-    console.log(files)
-    // const func = async () => {
-    //     try {
-    //         const params = {
-    //             name: "sxoc",
-    //             size: "230 мм",
-    //             price: "120",
-    //             description: "Электрическая болгарка для резки и шлифовки различных материалов.",
-    //             brandName: "sovet",
-    //             productImage: files,
-    //         }
-    //
-    //
-    //         const {data} = await axios.post(`https://world-of-construction.onrender.com/admin/product/24`, params,
-    //             {
-    //                 headers: {
-    //                     "Content-Type": "multipart/form-data",
-    //                     Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYxLCJlbWFpbCI6ImFkbWluQG1haWwucnUiLCJpYXQiOjE3NDIzMTM1OTEsImV4cCI6MTc0NDkwNTU5MX0.tU8a9i8JQJJ36KARoHuEiftBYoP9KirrLQ_DBM8DCXs",
-    //                 },
-    //                 // formSerializer: {indexes: true}
-    //             })
-    //         console.log(data, "products")
-    //         return data
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
     useEffect(() => {
-        const previewUrls = files.map((file) => URL.createObjectURL(file));
-        setPreviewImg(previewUrls);
+        if (statusDelete !== "pending") dispatch(fetchCards({page: 1}));
+    }, [statusDelete]);
 
+    useEffect(() => {
+        if (token) dispatch(getOrder({limit: 100}));
+    }, [orderConfirmStatus]);
 
-        return () => previewUrls.forEach(url => URL.revokeObjectURL(url));
-    }, [files]);
+    useEffect(() => {
+        dispatch(getStores());
+    }, []);
 
-
-    const func = async () => {
-        try {
-            const formData = new FormData();
-            formData.append("name", "sxoc");
-            formData.append("size", "230 мм");
-            formData.append("price", "120");
-            formData.append("description", "Электрическая болгарка для резки и шлифовки различных материалов.");
-            formData.append("brandName", "sovet");
-            formData.append("quantity", "2");
-
-            Array.from(files).forEach((file, index) => {
-                formData.append("productImage", file);
-            });
-
-            const {data} = await axios.post(
-                `https://world-of-construction.onrender.com/admin/product/24`,
-                formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYxLCJlbWFpbCI6ImFkbWluQG1haWwucnUiLCJpYXQiOjE3NDIzMTM1OTEsImV4cCI6MTc0NDkwNTU5MX0.tU8a9i8JQJJ36KARoHuEiftBYoP9KirrLQ_DBM8DCXs",
-                    }
-                }
-            );
-            console.log(data, "products");
-            return data;
-        } catch (error) {
-            console.log(error);
+    useEffect(() => {
+        if (token && redirectPath) {
+            navigate(redirectPath);
+            dispatch(clearRedirectPath());
         }
-    }
+    }, [token, redirectPath]);
 
-    const get = async () => {
-        try {
-            const {data} = await axios.get(`https://world-of-construction.onrender.com/home`,
-                {
-                    headers: {
-                        Authorization: token,
-                    }
-                })
-            console.log(data, "category")
-            return data
-        } catch (error) {
-            console.log(error)
+    useEffect(() => {
+        if (redirectPath && !token) {
+            dispatch(setIsOpenLogin(true));
         }
-    }
+    }, [redirectPath, token]);
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    useEffect(() => {
+        if (user) {
+            dispatch(setUserId(user.id));
+        }
+    }, [user]);
+
+    // Debounced search effect
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            const trimmedSearch = searchValue.trim();
+            dispatch(clearProductNames());
+
+            if (trimmedSearch) {
+                dispatch(getAllNames({page, limit, s: trimmedSearch}));
+            } else {
+                dispatch(getAllProducts({page}));
+            }
+        }, 500);
+
+        return () => clearTimeout(timeoutId);
+    }, [searchValue, page, limit, dispatch]);
+
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (searchRef.current && !searchRef.current.contains(event.target)) {
+                setIsSearchOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        const trimmedSearch = searchValue.trim();
+        if (!trimmedSearch) return;
+
+        setIsSearchOpen(false);
+        navigate("/products");
+
+        const searchParams = {
+            page,
+            limit,
+            minPrice,
+            maxPrice,
+            s: trimmedSearch,
+            ...(userId && {userId}),
+            ...(storeId && {storeId}),
+        };
+
+        dispatch(getAllProducts(searchParams));
+    };
+
+    const chooseName = (item) => {
+        dispatch(setNameData(item));
+        navigate(`one-product/${item.id}`);
+        dispatch(setSearchValue(""));
+    };
+
+    const storeGet = (id) => {
+        navigate(`/store/${id}`);
+        setMoreAnim("nav-more disabled");
+        setTimeout(() => {
+            setMoreAnim("nav-more");
+        }, 300);
+    };
 
     return (
         <>
             <div className="wrapper">
                 <header className="header">
-                    <div className="container">
-                        <Link to="/" className="logo-block">
-                            <div className="logo">
-                                Logo
-                            </div>
-                        </Link>
+                    <div className="nav-header">
+                        <div className="container-header">
+                            <div className="header-block">
+                                <Link to="/" className="logo-block">
+                                    <div className="logo">
+                                        <img src={logo} alt="logo"/>
+                                    </div>
+                                </Link>
 
-                        <label htmlFor="avatar">
-                            <input type="file" id="avatar" onChange={(e) => setFiles(Array.from(e.target.files))}
-                                   multiple/>
-                        </label>
-
-
-                        <button onClick={get}>get</button>
-
-                        <button onClick={func}>update</button>
-
-                        <div>
-                            <p>...navigation...</p>
-                        </div>
-
-                        <>
-                            {!token ?
-                                <div className="login-block">
-                                    <button className="login" onClick={() => setIsOpenLogin(true)}>LOGIN</button>
-                                    {/*<button className="register" onClick={() => setIsOpenRegister(true)}>REGISTER*/}
-                                    {/*</button>*/}
-                                    <Link className="register" to="/register">REGISTER
-                                    </Link>
+                                <div className="store-add">
+                                    {location.pathname === `/store/${id}` &&
+                                        (stores.length ? (
+                                            stores.map(
+                                                (item) =>
+                                                    Number(id) === item.id && (
+                                                        <div className="store-item" key={item.id}>
+                                                            <FontAwesomeIcon icon={faArrowRight} className="icon"/>
+                                                            <div className="store-logo">
+                                                                <img src={item.storeLogo[0].path} alt="logo"/>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                            )
+                                        ) : (
+                                            <div className="store-item">
+                                                <FontAwesomeIcon icon={faArrowRight} className="icon"/>
+                                                <div className="store-logo loading-gradient-p"></div>
+                                            </div>
+                                        ))}
                                 </div>
-                                :
+
+                                <nav className="nav">
+                                    <ul className="nav-list">
+                                        <li className="nav-item">
+                                            Store
+                                            <FontAwesomeIcon icon={faAngleDown} className="store-arrow"/>
+                                            <ul className={moreAnim}>
+                                                {stores.map(
+                                                    (item) =>
+                                                        Number(id) !== item.id &&
+                                                        moreAnim === "nav-more" && (
+                                                            <li
+                                                                className="store-list"
+                                                                key={item.id}
+                                                                onClick={() => storeGet(item.id)}
+                                                            >
+                                                                <div className="store-logo">
+                                                                    <img src={item.storeLogo[0].path} alt="logo"/>
+                                                                </div>
+                                                            </li>
+                                                        )
+                                                )}
+                                            </ul>
+                                        </li>
+
+                                        <Link
+                                            className={location.pathname === "/products" ? "nav-item-active" : "nav-item"}
+                                            to="/products"
+                                        >
+                                            <li>Products</li>
+                                        </Link>
+                                        <Link
+                                            className={location.pathname === "/contacts" ? "nav-item-active" : "nav-item"}
+                                            to="/contacts"
+                                        >
+                                            <li>Contact</li>
+                                        </Link>
+                                    </ul>
+                                </nav>
+
+                                <div ref={searchRef} className="search-box">
+                                    <div className="search-row">
+                                        <form style={{height: 45}} onSubmit={handleSearch}>
+                                            <input
+                                                onFocus={() => setIsSearchOpen(true)}
+                                                className="new-search-input"
+                                                type="text"
+                                                placeholder="Search"
+                                                autoComplete="off"
+                                                value={searchValue}
+                                                onChange={(e) => {
+                                                    dispatch(setSearchValue(e.target.value));
+                                                    if (e.target.value.trim()) {
+                                                        setIsSearchOpen(true);
+                                                    }
+                                                }}
+                                            />
+                                            <FontAwesomeIcon onClick={handleSearch} icon={faMagnifyingGlass}
+                                                             className="glass"/>
+                                        </form>
+                                    </div>
+
+                                    {searchValue.trim().length > 0 && productsNames.length > 0 && isSearchOpen && (
+                                        <div className="result-box">
+                                            <div className="search-ul">
+                                                {productsNames.map((item) => (
+                                                    <div className="search-li" key={item.id}
+                                                         onClick={() => chooseName(item)}>
+                                                        {item.name}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
                                 <div className="user-block">
-                                    <div className="user"></div>
+                                    {!token ? (
+                                        <>
+                                            <div className="sign-block">
+                                                <Button text="LOGIN" className="active-button"
+                                                        onClick={() => dispatch(setIsOpenLogin(true))}/>
+                                            </div>
+                                            <div className="sign-block">
+                                                <Button text="REGISTER" className="register-button"
+                                                        onClick={() => navigate("/register")}/>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Notifications/>
+                                            <Link to="/basket">
+                                                <div className="cart">
+                                                    {totalCard !== 0 && statusCard !== "error" && (
+                                                        <div className="count">
+                                                            <strong>{totalCard}</strong>
+                                                        </div>
+                                                    )}
+                                                    <FontAwesomeIcon
+                                                        icon={faCartShopping}
+                                                        className={location.pathname === "/basket" ? "cart-icon-active" : "cart-icon"}
+                                                    />
+                                                </div>
+                                            </Link>
+                                            <Link to="/orders">
+                                                <div className="cart">
+                                                    {totalOrder !== 0 && statusOrder !== "error" && (
+                                                        <div className="count">
+                                                            <strong>{totalOrder}</strong>
+                                                        </div>
+                                                    )}
+                                                    <FontAwesomeIcon
+                                                        icon={faCube}
+                                                        className={location.pathname === "/orders" ? "cart-icon-active" : "cart-icon"}
+                                                    />
+                                                </div>
+                                            </Link>
+                                            <Profile/>
+                                        </>
+                                    )}
                                 </div>
-                            }
-                        </>
-
-
+                            </div>
+                        </div>
                     </div>
                 </header>
 
@@ -158,21 +333,117 @@ function Layout() {
                 </main>
 
                 <footer className="footer">
+                    <div className="footer-block-c">
+                        <div className="footer-container">
+                            <div className="footer-blocks">
+                                <div className="footer-block">
+                                    <div className="footer-shop-info">
+                                        <h3>Multify Market</h3>
+                                    </div>
+                                    <div className="footer-shop-info">
+                                        {isMobile ? (
+                                            <a href="mailto:multifymarket@gmail.com">
+                                                <FontAwesomeIcon icon={faEnvelope} className="footer-icon"/>
+                                                Multifymarket@gmail.com
+                                            </a>
+                                        ) : (
+                                            <a
+                                                href="https://mail.google.com/mail/?view=cm&fs=1&to=multifymarket@gmail.com"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                <FontAwesomeIcon icon={faEnvelope} className="footer-icon"/>
+                                                Multifymarket@gmail.com
+                                            </a>
+                                        )}
+                                    </div>
+                                    <div className="footer-shop-info">
+                                        <Link
+                                            target="_blank"
+                                            to="https://www.google.am/maps/place/Techno-Educational+Academy/@40.7855952,43.843743"
+                                        >
+                                            <FontAwesomeIcon icon={faLocationDot} className="footer-icon"/>
+                                            4 Tsulukidze St, Gyumri
+                                        </Link>
+                                    </div>
+                                </div>
 
+                                {token ? (
+                                    <div className="footer-block">
+                                        <div className="footer-link">
+                                            <Link to="/user">Profile</Link>
+                                        </div>
+                                        <div className="footer-link">
+                                            <Link to="/orders">Order</Link>
+                                        </div>
+                                        <div className="footer-link">
+                                            <Link to="/basket">Basket</Link>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="footer-block">
+                                        <div className="footer-link">
+                      <span className="login-f" onClick={() => dispatch(setIsOpenLogin(true))}>
+                        Login
+                      </span>
+                                        </div>
+                                        <div className="footer-link">
+                                            <Link to="/register">Register</Link>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="footer-block">
+                                    <div className="footer-link">
+                                        <Link to="/shares">Share</Link>
+                                    </div>
+                                    <div className="footer-link">
+                                        <Link to="/contacts">Contact</Link>
+                                    </div>
+                                </div>
+
+                                <div className="footer-block">
+                                    <div className="footer-link">
+                                        {isMobile ? (
+                                            <a href="mailto:multifymarket@gmail.com">
+                                                Become a seller
+                                            </a>
+                                        ) : (
+                                            <a
+                                                href="https://mail.google.com/mail/?view=cm&fs=1&to=multifymarket@gmail.com"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                Become a seller
+                                            </a>
+                                        )}                  </div>
+                                </div>
+                            </div>
+                            <hr/>
+
+                            <div className="footer-end">
+                                <div className="footer-end-block">
+                                    <span>&copy; STORY</span>
+                                </div>
+                                <div className="footer-end-block">
+                                    <img src={visa} className="footer-cart"/>
+                                    <img src={group5} className="footer-cart"/>
+                                    <img src={group6} className="footer-cart"/>
+                                    <img src={sim} className="footer-cart"/>
+                                </div>
+                                <div className="footer-end-block">
+                                    <span>Made in Techno-Educational Academy</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </footer>
             </div>
 
-            <ModalRegister
-                open={isOpenRegister} onClose={() => {
-                setIsOpenRegister(false)
-            }}/>
-            <ModalLogin
-                open={isOpenLogin} onClose={() => {
-                setIsOpenLogin(false)
-            }}/>
+            <ModalLogin open={isOpenLogin} onClose={() => dispatch(setIsOpenLogin(false))}/>
         </>
-
     );
 }
 
 export default Layout;
+

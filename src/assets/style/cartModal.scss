@@ -1,0 +1,36 @@
+@import "variables";
+
+.modal-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+
+  &_title{
+    margin-top: 20px;
+    text-align: center;
+    font-size: 17px;
+    color: #2c2b2b;
+    margin-bottom: 35px;
+  }
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 30px;
+}
+
+.active-button.confirm, .cancel-btn {
+  width: 100px;
+  line-height: 40px;
+}
+
+.cancel-btn {
+  background-color: red;
+  color: white;
+
+  &:hover{
+    background: #e03a3a;
+  }
+}

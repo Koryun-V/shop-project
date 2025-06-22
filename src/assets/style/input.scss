@@ -1,0 +1,205 @@
+@import "variables";
+
+.field-block {
+  position: relative;
+  width: 320px;
+}
+
+.login {
+  position: relative;
+  width: 320px;
+}
+
+.field-block:nth-child(3) {
+  margin-top: 90px;
+  position: relative;
+  width: 100px;
+}
+
+.field-block:nth-child(4) {
+  margin-top: 90px;
+  position: relative;
+  width: 100px;
+}
+
+.field-block:nth-child(5) {
+  margin-top: 90px;
+  position: relative;
+  width: 100px;
+}
+
+.field-block:nth-child(7) {
+  position: relative;
+  width: 155px;
+}
+
+.field-block:nth-child(8) {
+  position: relative;
+  width: 155px;
+}
+
+.search-block {
+  min-width: 200px;
+  width: 20%;
+  margin: 0 10px;
+  position: relative;
+  height: 40px;
+
+  .form-search {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.address{
+  -webkit-box-shadow: 0px 0px 30px 0px rgba(201, 6, 6, 0.9);
+  -moz-box-shadow: 0px 0px 30px 0px rgba(201, 6, 6, 0.9);
+  box-shadow: 0px 0px 30px 0px rgba(201, 6, 6, 0.9);
+}
+
+.input-block {
+  height: 100%;
+  position: relative;
+  background: #F6F6F6;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+
+  .input {
+    margin-top: 5px;
+    width: 100%;
+    height: 100%;
+    font-size: 15px;
+    padding: 0 30px 0 15px;
+    z-index: 5;
+    background: transparent;
+    position: absolute;
+    outline: none;
+    border: none;
+    font-family: "PoppinsMedium", sans-serif;
+  }
+
+  .search-input {
+    height: 100%;
+    width: 100%;
+    font-size: 16px;
+    padding: 0 30px 0 15px;
+    z-index: 5;
+    background: transparent;
+    position: absolute;
+    outline: none;
+    border: none;
+    font-family: "PoppinsMedium", sans-serif;
+  }
+}
+
+.test {
+  top: 92%;
+  transition: 0.3s;
+  z-index: 2;
+  width: 0;
+  position: absolute;
+  border-radius: 0 0 3px 3px;
+  border-bottom: 4px solid $interfaceColor;
+}
+
+.test2 {
+  width: 100%;
+  z-index: 4;
+  bottom: 100%;
+  position: absolute;
+  border-radius: 3px;
+  border-bottom: 4px solid red;
+  height: 50px;
+}
+
+.label {
+  position: absolute;
+  left: 15px;
+  top: 10px;
+  transition: 0.4s;
+  font-family: "PoppinsMedium", sans-serif;
+  font-size: 15px;
+}
+
+.active {
+  font-size: 15px;
+  position: absolute;
+  left: 15px;
+  top: 0;
+  transition: 0.4s;
+  color: #2e2e2e;
+  z-index: 3;
+  font-family: "PoppinsMedium", sans-serif;
+}
+
+.field-block:focus-within .label {
+  top: 0;
+  z-index: 3;
+}
+
+.login:focus-within .label {
+  top: 0;
+  z-index: 3;
+}
+
+.input-block:focus-within .test {
+  width: 100%;
+}
+
+.validation-info {
+  height: 40px;
+  position: relative;
+  width: 100%;
+
+  span {
+    cursor: default;
+    color: red;
+    top: 50px;
+    font-size: 14px;
+    font-family: sans-serif;
+    font-weight: 600;
+  }
+}
+
+.validation-info-login {
+  height: 20px;
+  position: relative;
+  width: 100%;
+  margin-top: 2px;
+
+  span {
+    cursor: default;
+    color: red;
+    font-size: 14px;
+    font-family: "RobotoMedium", sans-serif;
+  }
+}
+
+.search-field {
+  width: 100%;
+  height: 100%;
+
+  form {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.eye {
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  color: $interfaceColor;
+  bottom: 0;
+  top: 0;
+  margin: auto;
+  z-index: 5;
+}
+
+.div {
+  width: 100px;
+}
+
+
